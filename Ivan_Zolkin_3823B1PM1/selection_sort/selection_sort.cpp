@@ -3,16 +3,36 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "stdio.h";
 #include "stdlib.h"
-#include <algorithm>
-#include "intrin.h"
-#pragma intrinsic(__rdtsc)
-using namespace std;
+//#include "intrin.h"
+//#pragma intrinsic(__rdtsc)
 
-void swap(double* a, double* b) {   //swap variables
+void swap(double* a,double* b) {   //swap variables
     double temp = *a;
     *a = *b;
     *b = temp;
 }
+//qsort compare functions start
+//int cmp(const void* a, const void* b)
+//{
+//    const double* ad, * bd;
+//
+//    ad = (const double*)a;
+//    bd = (const double*)b;
+//
+//    if (*ad < *bd)
+//    {
+//        return -1;
+//    }
+//    else if (*ad > *bd)
+//    {
+//        return 1;
+//    }
+//    else
+//    {
+//        return 0;
+//    }
+//}
+//qsort compare functions end
 
 void selection_s(double* ptr, int n) { //every time find the min element (to the right of i-element) and swap with i-element
     int i = 0, minI, j;
@@ -30,41 +50,40 @@ void selection_s(double* ptr, int n) { //every time find the min element (to the
 int main()
 {
     int n, i = 0;
+    //unsigned __int64 a, b; //ticks test
     scanf("%d", &n);
     double* mas = (double*)malloc(n * sizeof(double));
-    unsigned __int64 a, b;
     //double* mas_TRUE = (double*)malloc(n * sizeof(double));   //for correct test
+    
     //random start
-    /*
-    for (; i < n / 2; i++) {
-        mas[i] = -10000 + ((rand() % (int)pow(10, 7)) / pow(10, 7)) * (10000 - -10000);
-        //mas_TRUE[i] = mas[i];
-    }
-    for (i = n / 2; i < n; i++) {
-        mas[i] = ((rand() % (int)pow(10, 7)));
-        //mas_TRUE[i] = mas[i];
-    }
-    */
+    /*for(;i<n;i++){
+        mas[i] = double(rand())/RAND_MAX * 2000.0 - 1000.0;
+        mas_TRUE[i] = mas[i];
+    }*/
     //random end
+    
     
     for (; i < n; i++) {
         scanf("%lf", &mas[i]);
     }
+    
+    
+    //tick test start   !UNCOMMENT inlude and pragma
     //a = __rdtsc();
     selection_s(mas, n);
     //b = __rdtsc();
     //printf_s("%I64d ticks\n", b - a);
-    //correct test start
-    /*
-    sort(mas_TRUE, mas_TRUE + n);
+    //tick test end
+    
+    //correct test start    !UNCOMMENT cmp() function!
+    /*qsort(mas_TRUE,n,sizeof(double),cmp);
     for (i = 0; i < n; i++) {
         if (!(mas[i]*mas[i] - mas_TRUE[i]*mas_TRUE[i] > -1e-6 && mas[i] * mas[i] - mas_TRUE[i] * mas_TRUE[i] < 1e-6)) {
-            printf("ERROR! %lf %lf %lf",mas[i],mas_TRUE[i], abs(mas[i] - mas_TRUE[i]));
+            printf("ERROR! %lf %lf",mas[i],mas_TRUE[i]);
             return 1;
         }
     }
-    printf("OK!");
-    */
+    printf("OK!");*/
     //correct test finish
     
     for (i = 0; i < n; i++) {
