@@ -36,8 +36,7 @@ char check_sort(float* a, float* sorted_a, int n) {
 
 void random_nums(float* a, int n)
 {
-    int i;
-    for (i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
         a[i] = (((float)rand() / RAND_MAX) * 2 - 1) * 1e6;
 }
 
