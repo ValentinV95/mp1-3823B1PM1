@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
 #include <intrin.h>
@@ -12,7 +12,7 @@ int compare(const void* a, const void* b) {
     float* ptr_a = (float*)a;
     float* ptr_b = (float*)b;
 
-    if (*ptr_a < *ptr_b) {
+    if (*ptr_a <= *ptr_b) {
         return -1;
     }
     else if (*ptr_a > *ptr_b) {
@@ -25,27 +25,20 @@ int compare(const void* a, const void* b) {
 
 char check_sort(float* a, float* sorted_a, int n) {
     for (int i = 0; i < n - 1; i++)
-        if (sorted_a[i] > sorted_a[i + 1]) {
-            printf("%.2f %.2f\n", sorted_a[i], sorted_a[i + 1]);
+        if (sorted_a[i] > sorted_a[i + 1])
             return 'n';
-        }
-    printf("hsdiufi");
     qsort(a, n, sizeof(float), compare);
     for (int i = 0; i < n; i++)
-        if (a[i] != sorted_a[i]) {
-            printf("%.2f %.2f\n", a[i], sorted_a[i]);
+        if (a[i] != sorted_a[i]) 
             return 'n';
-        }
     return 's';
 }
 
-void randomFilling(float* a, int n)
+void random_nums(float* a, int n)
 {
     int i;
     for (i = 0; i < n; i++)
-    {
-        a[i] = (rand() * (float)rand() / (rand() + 1)) * ((rand() % 2) ? -1 : 1);
-    }
+        a[i] = (((float)rand() / RAND_MAX) * 2 - 1) * 1e6;
 }
 
 void print_array(float* a, int n, int order)
@@ -157,9 +150,9 @@ void time_sort()
     unsigned long long start, time;
     unsigned long long startOn, On;
     printf("choose\n");
-    for (int n = 1e5; n <= 0; n += 1e5) {
+    for (int n = 1e5; n <= 1e6; n += 1e5) {
         float* arr = (float*)malloc(n * sizeof(float));
-        randomFilling(arr, n);
+        random_nums(arr, n);
         float* arr_sort = (float*)malloc(n * sizeof(float));
         startOn = __rdtsc();
         for (int i = 0; i < n; i++)
@@ -168,16 +161,17 @@ void time_sort()
         start = __rdtsc();
         choose(arr_sort, n);
         time = __rdtsc() - start;
+        print_array(arr_sort, n, 0);
         printf("n = %d \n", n);
-        printf("ass - %f\n", (float)time / (On * On));
+        printf("ratio - %f\n", (float)time / (On * On));
         //printf("%c\n", check_sort(arr, arr_sort, n));
         free(arr);
         free(arr_sort);
     }
     printf("\ncomb\n");
-    for (int n = 1e7; n <= 0; n += 1e7) {
+    for (int n = 1e7; n <= 1e8; n += 1e7) {
         float* arr = (float*)malloc(n * sizeof(float));
-        randomFilling(arr, n);
+        random_nums(arr, n);
         float* arr_sort = (float*)malloc(n * sizeof(float));
         startOn = __rdtsc();
         for (int i = 0; i < n; i++)
@@ -187,17 +181,17 @@ void time_sort()
         comb_sort(arr_sort, n);
         time = __rdtsc() - start;
         printf("n = %d \n", n);
-        printf("ass - %f\n", (float)time / (On * log(On)));
+        printf("ratio - %f\n", (float)time / (On * log(On)));
         //printf("%c\n", check_sort(arr, arr_sort, n));
         free(arr);
         free(arr_sort);
     }
     printf("\nmerge\n");
-    for (int n = 1e7; n <= 0; n += 1e7) {
+    for (int n = 1e7; n <= 1e8; n += 1e7) {
         float* arr = (float*)malloc(n * sizeof(float));
         float* tmpdata = (float*)malloc(n * sizeof(float));
         float* arr_sort = (float*)malloc(n * sizeof(float));
-        randomFilling(arr, n);
+        random_nums(arr, n);
         startOn = __rdtsc();
         for (int i = 0; i < n; i++)
             arr_sort[i] = arr[i];
@@ -206,7 +200,7 @@ void time_sort()
         mergeSort(arr_sort, tmpdata, 0, n - 1);
         time = __rdtsc() - start;
         printf("n = %d \n", n);
-        printf("ass - %f\n", (float)time / (On * log(On)));
+        printf("ratio - %f\n", (float)time / (On * log(On)));
         //printf("%c\n", check_sort(arr, arr_sort, n));
         free(tmpdata);
         free(arr);
@@ -215,7 +209,7 @@ void time_sort()
     printf("\nradix\n");
     for (int n = 5 * 1e7; n <= 1e9; n += 1e7) {
         float* arr = (float*)malloc(n * sizeof(float));
-        randomFilling(arr, n);
+        random_nums(arr, n);
         float* arr_sort = (float*)malloc(n * sizeof(float));
         startOn = __rdtsc();
         for (int i = 0; i < n; i++)
@@ -225,7 +219,7 @@ void time_sort()
         radixSort(arr_sort, n);
         time = __rdtsc() - start;
         printf("n = %d \n", n);
-        printf("ass - %f\n", (float)time / (On));
+        printf("ratio - %f\n", (float)time / (On));
         float* tmp = (float*)malloc(n * sizeof(float));
         int l = 0, r = n - 1, res = -1;
         while (l <= r) {
@@ -252,7 +246,7 @@ void time_sort()
         free(arr);
         free(arr_sort);
         free(tmp);
-    }
+    } 
 }
 void Client() {
     int status = 1;
