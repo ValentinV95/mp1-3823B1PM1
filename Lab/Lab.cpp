@@ -1,10 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <iostream>
 #include <intrin.h>
 #include <locale.h>
 #include <math.h>
-using namespace std;
 
 #pragma intrinsic(__rdtsc)
 
@@ -18,25 +16,24 @@ int compare(const void* a, const void* b) {
     else if (*ptr_a > *ptr_b) {
         return 1;
     }
-    else {
-        return 0;
-    }
+    return 0;
 }
 
-char check_sort(float* a, float* sorted_a, int n) {
-    for (int i = 0; i < n - 1; i++)
-        if (sorted_a[i] > sorted_a[i + 1])
-            return 'n';
-    qsort(a, n, sizeof(float), compare);
+char check_sort(float* a, int n) {
+    float* a_cpy = (float*)malloc(n * sizeof(float));
     for (int i = 0; i < n; i++)
-        if (a[i] != sorted_a[i]) 
+        a_cpy[i] = a[i];
+    qsort(a_cpy, n, sizeof(float), compare);
+    for (int i = 0; i < n; i++)
+        if (a[i] != a_cpy[i]) 
             return 'n';
     return 's';
 }
 
-void random_nums(float* a, int n)
+void random_nums(float* a, unsigned long long n)
 {
-    for (int i = 0; i < n; i++)
+    int i;
+    for (i = 0; i < n; i++)
         a[i] = (((float)rand() / RAND_MAX) * 2 - 1) * 1e6;
 }
 
@@ -94,9 +91,8 @@ void comb_sort(float* a, int n) {
     }
 }
 
-void radixSort(float arr[], int n) {
+void radixSort(float* arr, float* tmp, int n) {
     unsigned char* pm = (unsigned char*)arr;
-    float* output = (float*)malloc(n * sizeof(float));
     int count[256];
     for (int byte_num = 0; byte_num < sizeof(float); byte_num++) {
         for (int i = 0; i < 256; i++)
@@ -106,13 +102,17 @@ void radixSort(float arr[], int n) {
         for (int i = 1; i < 256; i++)
             count[i] += count[i - 1];
         for (int i = n - 1; i >= 0; i--)
-            output[--count[pm[i * sizeof(float) + byte_num]]] = arr[i];
-        float* tmp = arr;
-        arr = output;
-        output = tmp;
+            tmp[--count[pm[i * sizeof(float) + byte_num]]] = arr[i];
+        float* t = arr;
+        arr = tmp;
+        tmp = t;
         pm = (unsigned char*)arr;
     }
-    free(output);
+    int p = 0;
+    for (int i = n - 1; arr[i] <= 0; i--)
+        tmp[p++] = arr[i];
+    for (int i = 0; arr[i] >= 0; i++)
+        tmp[p++] = arr[i];
 }
 
 void merge(float* arr, int l, int r, float* tmp) {
@@ -144,152 +144,129 @@ void mergeSort(float* arr, float* tmpdata, int l, int r) {
     }
 }
 
+
+void Client() {
+    int status = 1;
+    while (status) {
+        printf("Выберите сортировку\n1 - Выбором, 2 - Расческой, 3 - Слиянием, 4 - Поразрядная\n");
+        int c, rand_or_not;
+        scanf_s("%d", &c);
+        printf("Порядок сортировки элементов\n1 - по возрастанию, 2 - по убыванию\n");
+        int order;
+        scanf_s("%d", &order);
+        printf("Введите количество элементов:\n");
+        unsigned long long n;
+        scanf_s("%llu", &n);
+        printf("1 - Ввести элементы вручную, 2 - генерация случайных чисел от -10^6 до 10^6\n");
+        float* a = (float*)malloc(n * sizeof(float));
+        scanf_s("%d", &rand_or_not);
+        if (rand_or_not-1)
+            random_nums(a, n);
+        else
+            for (int i = 0; i < n; i++)
+                scanf_s("%f", &a[i]); 
+        float* tmp = (float*)malloc(n * sizeof(float));
+        unsigned long long ratio;
+        unsigned long long time = __rdtsc();
+        switch (c) {
+        case 1:
+            ratio = n * n;
+            choose(a, n);
+            break;
+        case 2:
+            ratio = n * log2(n);
+            comb_sort(a, n);
+            break;
+        case 3:
+            ratio = n * log2(n);
+            mergeSort(a, tmp, 0, n - 1);
+            break;
+        case 4:
+            ratio = n;
+            radixSort(a, tmp, n);
+            float* t = a;
+            a = tmp;
+            tmp = t;
+            break;
+        }
+        time = __rdtsc() - time;
+        printf("Количество тактов процессора - %llu\n", time);
+        printf("Корректность работы - %c\n", check_sort(a, n));
+        printf("константа - %f\n", float(time)/ratio);
+        int c3;
+        printf("Вывести массив?\n1 - нет, 2 - да\n");
+        scanf_s("%d", &c3);
+        if (c3 - 1)
+            print_array(a, n, order-1);
+        free(tmp);
+        free(a);
+        printf("Продолжить работу?\n0 - выйти из программы, 1 - продолжить\n");
+        scanf_s("%d", &status);
+    }
+}
+
 void time_sort()
 {
     unsigned long long start, time;
     unsigned long long startOn, On;
     printf("choose\n");
-    for (int n = 1e5; n <= 1e6; n += 1e5) {
+    for (unsigned long long n = 1e4; n <= 1e5; n += 1e4) {
         float* arr = (float*)malloc(n * sizeof(float));
         random_nums(arr, n);
-        float* arr_sort = (float*)malloc(n * sizeof(float));
-        startOn = __rdtsc();
-        for (int i = 0; i < n; i++)
-            arr_sort[i] = arr[i];
-        On = __rdtsc() - startOn;
         start = __rdtsc();
-        choose(arr_sort, n);
+        choose(arr, n);
         time = __rdtsc() - start;
-        print_array(arr_sort, n, 0);
+        //print_array(arr_sort, n, 0);
         printf("n = %d \n", n);
-        printf("ratio - %f\n", (float)time / (On * On));
+        printf("ratio - %f\n", (float)time / (n * n));
         //printf("%c\n", check_sort(arr, arr_sort, n));
         free(arr);
-        free(arr_sort);
     }
     printf("\ncomb\n");
-    for (int n = 1e7; n <= 1e8; n += 1e7) {
+    for (unsigned long long n = 1e7; n <= 1e8; n += 1e7) {
         float* arr = (float*)malloc(n * sizeof(float));
         random_nums(arr, n);
-        float* arr_sort = (float*)malloc(n * sizeof(float));
-        startOn = __rdtsc();
-        for (int i = 0; i < n; i++)
-            arr_sort[i] = arr[i];
-        On = __rdtsc() - startOn;
         start = __rdtsc();
-        comb_sort(arr_sort, n);
+        comb_sort(arr, n);
         time = __rdtsc() - start;
         printf("n = %d \n", n);
-        printf("ratio - %f\n", (float)time / (On * log(On)));
+        printf("ratio - %f\n", (float)time / (n * log2(n)));
         //printf("%c\n", check_sort(arr, arr_sort, n));
         free(arr);
-        free(arr_sort);
     }
     printf("\nmerge\n");
-    for (int n = 1e7; n <= 1e8; n += 1e7) {
+    for (unsigned long long n = 1e7; n <= 1e8; n += 1e7) {
         float* arr = (float*)malloc(n * sizeof(float));
         float* tmpdata = (float*)malloc(n * sizeof(float));
-        float* arr_sort = (float*)malloc(n * sizeof(float));
         random_nums(arr, n);
-        startOn = __rdtsc();
-        for (int i = 0; i < n; i++)
-            arr_sort[i] = arr[i];
-        On = __rdtsc() - startOn;
         start = __rdtsc();
-        mergeSort(arr_sort, tmpdata, 0, n - 1);
+        mergeSort(arr, tmpdata, 0, n - 1);
         time = __rdtsc() - start;
         printf("n = %d \n", n);
-        printf("ratio - %f\n", (float)time / (On * log(On)));
+        printf("ratio - %f\n", (float)time / (n * log2(n)));
         //printf("%c\n", check_sort(arr, arr_sort, n));
         free(tmpdata);
         free(arr);
-        free(arr_sort);
     }
     printf("\nradix\n");
-    for (int n = 5 * 1e7; n <= 1e9; n += 1e7) {
+    for (unsigned long long n = 1e8; n <= 1e9; n += 1e8) {
         float* arr = (float*)malloc(n * sizeof(float));
+        float* tmpdata = (float*)malloc(n * sizeof(float));
         random_nums(arr, n);
-        float* arr_sort = (float*)malloc(n * sizeof(float));
-        startOn = __rdtsc();
-        for (int i = 0; i < n; i++)
-            arr_sort[i] = arr[i];
-        On = __rdtsc() - startOn;
         start = __rdtsc();
-        radixSort(arr_sort, n);
+        radixSort(arr, tmpdata, n);
         time = __rdtsc() - start;
         printf("n = %d \n", n);
-        printf("ratio - %f\n", (float)time / (On));
-        float* tmp = (float*)malloc(n * sizeof(float));
-        int l = 0, r = n - 1, res = -1;
-        while (l <= r) {
-            int mid = (l + r) / 2;
-            if (arr_sort[mid] > 0)
-                l = mid + 1;
-            else {
-                res = mid;
-                r = mid - 1;
-            }
-        }
-        int p = 0;
-        if (res != -1) {
-            for (int i = n - 1; i >= res; i--)
-                tmp[p++] = arr_sort[i];
-            for (int i = 0; i < res; i++)
-                tmp[p++] = arr_sort[i];
-        }
-        else {
-            for (int i = 0; i < res; i++)
-                tmp[p++] = arr_sort[i];
-        }
-        //printf("%c", check_sort(arr_sort, tmp, n));
+        printf("ratio - %f\n", (float)time / n);
+        //printf("%c\n", check_sort(arr, n));
         free(arr);
-        free(arr_sort);
-        free(tmp);
-    } 
-}
-void Client() {
-    int status = 1;
-    while (status) {
-        printf("Выберите сортировку\n1 - Выбором, 2 - Расческой, 3 - Слиянием, 4 - Поразрядная\n");
-        int c;
-        scanf_s("%d", &c);
-        printf("Порядок сортировки элементов\n0 - по возрастанию, 1 - по убыванию\n");
-        int order;
-        scanf_s("%d", &order);
-        printf("Введите количество элементов:\n");
-        int n;
-        scanf_s("%d", &n);
-        printf("Введите элементы по порядку:\n");
-        float* a = (float*)malloc(n * sizeof(float));
-        for (int i = 0; i < n; i++)
-            scanf_s("%f", &a[i]);
-        float* tmp = (float*)malloc(n * sizeof(float));
-        switch (c) {
-        case 1:
-            choose(a, n);
-            print_array(a, n, order);
-            break;
-        case 2:
-            comb_sort(a, n);
-            print_array(a, n, order);
-            break;
-        case 3:
-            mergeSort(a, tmp, 0, n - 1);
-            print_array(a, n, order);
-            break;
-        case 4:
-            radixSort(a, n);
-            print_array(a, n, order);
-            break;
-        }
-        free(tmp);
-        free(a);
-        printf("Продолжить работу?\n0 - закончить, 1 - продолжить\n");
-        scanf_s("%d", &status);
+        free(tmpdata);
     }
 }
 
 int main() {
     setlocale(LC_ALL, ".1251");
-    time_sort();
+    Client();
+    //time_sort();
 }
+
