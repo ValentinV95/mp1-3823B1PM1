@@ -1,0 +1,4 @@
+﻿  shella_sort.cpp
+C:\Users\user\source\repos\shella_sort\shella_sort\shella_sort.cpp(19,13): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\user\source\repos\shella_sort\shella_sort\shella_sort.cpp(60,21): warning C4244: return: преобразование "double" в "int", возможна потеря данных
+  shella_sort.vcxproj -> C:\Users\user\source\repos\shella_sort\x64\Debug\shella_sort.exe

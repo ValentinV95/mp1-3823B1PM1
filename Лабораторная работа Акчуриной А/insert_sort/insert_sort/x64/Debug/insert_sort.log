@@ -1,0 +1,4 @@
+﻿  insert_sort.cpp
+C:\Users\user\source\repos\insert_sort\insert_sort\insert_sort.cpp(20,13): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\user\source\repos\insert_sort\insert_sort\insert_sort.cpp(58,21): warning C4244: return: преобразование "double" в "int", возможна потеря данных
+  insert_sort.vcxproj -> C:\Users\user\source\repos\insert_sort\x64\Debug\insert_sort.exe
