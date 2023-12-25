@@ -8,10 +8,10 @@ int compare(const void *a, const void *b){
     return (*(int*)a - *(int*)b);
 }
 
-void combsort( int* arr, int step) {
+void combsort( double* arr, int step) {
 step = size - 1;
 float factor = 1.2473;
-int tmp = 0;
+double tmp = 0;
 while (step >= 1){
     for (int j = 0; j < size - step; j++) {
         if ( arr[j] > arr[j+step]){
@@ -27,25 +27,26 @@ while (step >= 1){
 int main () {
     clock_t start, end;
     double cpu_time_used;
-    int arr[size], i;
+    double arr[size];
+    int i;
     srand(time(0));
     for ( i = 0; i < size; i++) {
-        arr[i] = rand() % range;
+        arr[i] = (double)(rand() % range);
     }
     printf ( "массив\n");
     for ( i = 0; i < size; i++)
-        printf( "%d ", arr[i]);
+        printf( "%.2lf ", arr[i]);
     printf ("\nотсортированный массив\n");
     start = clock();
     combsort ( arr, size);
     end = clock();
     for (int i = 0; i < size; i++) {
-        printf("%d ", arr[i]);
+        printf("%.2lf ", arr[i]);
     }
     qsort(arr, size, sizeof(int), compare);
         printf("\nготовый массив \n");
         for (i = 0; i < size; i++){
-            printf ("%d ", arr[i]);
+            printf ("%.2lf ", arr[i]);
         }
     cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC; // Вычисляем затраченное процессорное время
     printf("Количество тактов: %ld\n", end - start);
