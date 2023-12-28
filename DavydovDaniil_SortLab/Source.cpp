@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#include <math.h>
-#include <algorithm>
+#include <intrin.h>
+#pragma intrinsic (__rdtsc)
 #define min(i, j) (((i)<(j))?(i):(j))
 #define max(i, j) (((i)>(j))?(i):(j))
 void swaplf(double* a, double* b);
@@ -20,55 +19,91 @@ void sort_radix_backward_LSD_arrlf(double* array, long long int size);
 void foffset(unsigned char* arrayuc, long long int size, int digit, int count[256]);
 int main()
 {
-	double* main_arr, * sorted_arr;
-	long long int n = 10000;
-	int c = 0, i, f = 0;
-	main_arr = (double*)malloc(n * sizeof(double));
-	sorted_arr = (double*)malloc(n * sizeof(double));
-	if ((main_arr == 0) || (sorted_arr == 0))
+	double* main_arr, * sorted_arr, d;
+	long long int n=0;
+	unsigned long long int i, j, k;
+	int c, f = 0, x = 1;
+	while(x)
 	{
+		printf("Choose size of array: ");
+		do
+			scanf_s("%lld", &n);
+		while (n <= 0);
+		main_arr = (double*)malloc(n * sizeof(double));
+		sorted_arr = (double*)malloc(n * sizeof(double));
+		if ((main_arr == 0) || (sorted_arr == 0))
+		{
+			free(main_arr);
+			free(sorted_arr);
+			printf("Memory error!\n");
+			return 0;
+		}
+		det_arrlf(main_arr, n);
+		equalize_arrlf(main_arr, sorted_arr, n);
+		printf("Do you want to see generated array? Yes - 1; No - 0\n");
+		do
+		{
+			scanf_s("%d", &c);
+		} while ((c != 0) && (c != 1));
+		if (c)
+		{
+			printf("Generated array:\n");
+			print_arrlf(main_arr, n);
+		}
+		c = 0;
+		printf("\nChoose sorting algorythm:\n1 - bubble sort;\n2 - quick sort;\n3 - merge sort;\n4 - radix sort\n");
+		do
+			scanf_s("%d", &c);
+		while ((c > 4) && (c < 1));
+		//Sorting massive
+		{
+			j = (__rdtsc());
+			if (c == 1)
+				sort_cocktail_arrlf(sorted_arr, n);
+			else if (c == 2)
+				sort_quick_arrlf(sorted_arr, 0, n - 1);
+			else if (c == 3)
+				sort_merge_arrlf(sorted_arr, n);
+			else if (c == 4)
+				sort_radix_backward_LSD_arrlf(sorted_arr, n);
+			k = (__rdtsc());
+		}
+		qsort((void*)main_arr, n, sizeof(double), comparelf);
+		//Checking array
+		{
+			for (i = 0; i < n; i++)
+			{
+				if (main_arr[i] != sorted_arr[i])
+				{
+					f = 1;
+					break;
+				}
+			}
+			if (f == 0)
+				printf("Everything is fine\n");
+			else
+			{
+				printf("Sort was FU\n");
+				printf("\n%llu\n", i);
+			}
+			printf("Sorting time: %llu ticks\n", (k - j));
+		}
+		printf("Do you want to see sorted array? Yes - 1; No - 0\n");
+		do
+			scanf_s("%d", &c);
+		while ((c != 0) && (c != 1));
+		if (c)
+		{
+			printf("Sorted array:\n");
+			print_arrlf(sorted_arr, n);
+		}
+		printf("Do you want to restart? Yes - 1; No - 0\n");
+		do
+			scanf_s("%d", &x);
+		while ((x != 0) && (x != 1));
 		free(main_arr);
 		free(sorted_arr);
-		printf("Memory error!\n");
-		return 0;
 	}
-	det_arrlf(main_arr, n);
-	equalize_arrlf(main_arr, sorted_arr, n);
-	printf("Choose sorting algorythm:\n1 - bubble sort;\n2 - quick sort;\n3 - merge sort;\n4 - radix sort\n");
-	do
-	{
-		scanf_s("%d", &c);
-	} while ((c > 4) && (c < 1));
-	/*printf("Original array:\n");
-	print_arrlf(main_arr, n);*/
-	if (c == 1)
-		sort_cocktail_arrlf(sorted_arr, n);
-	else if (c == 2)
-	{
-		sort_quick_arrlf(sorted_arr, 0, n - 1);
-	}
-	else if (c == 3)
-		sort_merge_arrlf(sorted_arr, n);
-	else if (c == 4)
-		sort_radix_backward_LSD_arrlf(sorted_arr, n);
-	/*printf("Sorted array:\n");
-	print_arrlf(sorted_arr, n);*/
-	qsort((void*)main_arr, n, sizeof(double), comparelf);
-	for (i = 0; i < n; i++)
-	{
-		if (main_arr[i] != sorted_arr[i])
-		{
-			f = 1;
-			break;
-		}
-	}
-	if (f == 0)
-		printf("Everything is fine\n");
-	else
-		printf("Sort was FU\n");
-	/*print_arrlf(main_arr, n);*/
-	free(main_arr);
-	free(sorted_arr);
 	return 0;
 }
 void swaplf(double* p1, double* p2)
@@ -157,12 +192,11 @@ void sort_cocktail_arrlf(double* arr, long long int n)
 void sort_quick_arrlf(double* arr, long long int s, long long int f)
 {
 	long long int i = s, j = f;
-	if (s < f)
 	{
 		partition(arr, &i, &j);
-		if (s < j)
+		if ((j - s) > 0)
 			sort_quick_arrlf(arr, s, j);
-		if (f > i)
+		if ((f - i) > 0)
 			sort_quick_arrlf(arr, i, f);
 	}
 	return;
@@ -204,7 +238,10 @@ void sort_merge_arrlf(double* arr, long long int n)
 		f = 1 - f;
 	}
 	if (f)
-		equalize_arrlf(tmp_arr, arr, n);
+	{
+		equalize_arrlf(arr, tmp_arr, n);
+		swapp(&arr, &tmp_arr);
+	}
 	free(tmp_arr);
 	return;
 }
