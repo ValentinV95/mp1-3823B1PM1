@@ -1,0 +1,47 @@
+﻿  sort.cpp
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(36,53): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(53,16): warning C4244: =: преобразование "float" в "int", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(171,23): warning C4244: аргумент: преобразование "unsigned __int64" в "float", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(174,30): warning C4244: аргумент: преобразование "unsigned __int64" в "double", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(174,23): warning C4244: =: преобразование "double" в "unsigned __int64", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(175,22): warning C4244: аргумент: преобразование "unsigned __int64" в "float", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(178,30): warning C4244: аргумент: преобразование "unsigned __int64" в "double", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(178,23): warning C4244: =: преобразование "double" в "unsigned __int64", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(179,36): warning C4244: аргумент: преобразование "unsigned __int64" в "int", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(183,27): warning C4244: аргумент: преобразование "unsigned __int64" в "int", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(191,64): warning C4244: аргумент: преобразование "unsigned __int64" в "int", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(197,28): warning C4244: аргумент: преобразование "unsigned __int64" в "int", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(209,31): warning C4244: инициализация: преобразование "double" в "unsigned __int64", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(209,51): warning C4244: +=: преобразование "double" в "unsigned __int64", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(213,21): warning C4244: аргумент: преобразование "unsigned __int64" в "float", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(215,16): warning C4477: "printf": в строке форматирования "%d" требуется аргумент типа "int", но вариативный аргумент "1" имеет тип "unsigned __int64"
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(215,16): message : рекомендуется использовать "%lld" в строке форматирования
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(215,16): message : рекомендуется использовать "%Id" в строке форматирования
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(215,16): message : рекомендуется использовать "%I64d" в строке форматирования
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(219,12): warning C4129: s: неизвестная escape-последовательность
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(220,31): warning C4244: инициализация: преобразование "double" в "unsigned __int64", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(220,55): warning C4244: +=: преобразование "double" в "unsigned __int64", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(224,20): warning C4244: аргумент: преобразование "unsigned __int64" в "float", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(226,16): warning C4477: "printf": в строке форматирования "%d" требуется аргумент типа "int", но вариативный аргумент "1" имеет тип "unsigned __int64"
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(226,16): message : рекомендуется использовать "%lld" в строке форматирования
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(226,16): message : рекомендуется использовать "%Id" в строке форматирования
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(226,16): message : рекомендуется использовать "%I64d" в строке форматирования
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(227,55): warning C4244: аргумент: преобразование "unsigned __int64" в "double", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(231,31): warning C4244: инициализация: преобразование "double" в "unsigned __int64", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(231,53): warning C4244: +=: преобразование "double" в "unsigned __int64", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(236,38): warning C4244: аргумент: преобразование "unsigned __int64" в "int", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(238,16): warning C4477: "printf": в строке форматирования "%d" требуется аргумент типа "int", но вариативный аргумент "1" имеет тип "unsigned __int64"
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(238,16): message : рекомендуется использовать "%lld" в строке форматирования
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(238,16): message : рекомендуется использовать "%Id" в строке форматирования
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(238,16): message : рекомендуется использовать "%I64d" в строке форматирования
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(239,56): warning C4244: аргумент: преобразование "unsigned __int64" в "double", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(244,31): warning C4244: инициализация: преобразование "double" в "unsigned __int64", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(244,54): warning C4244: +=: преобразование "double" в "unsigned __int64", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(249,29): warning C4244: аргумент: преобразование "unsigned __int64" в "int", возможна потеря данных
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(251,16): warning C4477: "printf": в строке форматирования "%d" требуется аргумент типа "int", но вариативный аргумент "1" имеет тип "unsigned __int64"
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(251,16): message : рекомендуется использовать "%lld" в строке форматирования
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(251,16): message : рекомендуется использовать "%Id" в строке форматирования
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(251,16): message : рекомендуется использовать "%I64d" в строке форматирования
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(207,33): warning C4101: On: неиспользованная локальная переменная
+C:\Users\user\Desktop\23-24\lab\sort\sortt\sortt\sort.cpp(207,24): warning C4101: startOn: неиспользованная локальная переменная
+  sortt.vcxproj -> C:\Users\user\Desktop\23-24\lab\sort\sortt\x64\Debug\sortt.exe
