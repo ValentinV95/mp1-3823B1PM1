@@ -77,7 +77,7 @@ float sum_series_pair_forward(float a, float x, float(*next)(float, int), int n)
     return res;
 }
 
-float abs(float a) {
+float abss(float a) {
     return a < 0 ? -a : a;
 }
 
@@ -101,29 +101,29 @@ int main()
         b = sum_series_forward(x, x, sin_p, how_many_macloren);
         c = sum_series_backward(x, x, sin_p, how_many_macloren);
         d = sum_series_pair_forward(x, x, sin_p, how_many_macloren);
-        printf_s("sin   %.7f %.7f %.7f %.7f || errors: %.7f %.7f %.7f\n", a, b, c, d,abs(a-b), abs(a - c), abs(a - d));
-        //fprintf(output,"sin %.2f %.7f %.7f %.7f\n",x, abs(a - b), abs(a - c), abs(a - d));
+        printf_s("sin   %.7f %.7f %.7f %.7f || errors: %.7f %.7f %.7f\n", a, b, c, d,abss(a-b), abss(a - c), abss(a - d));
+        //fprintf(output,"sin %.2f %.7f %.7f %.7f\n",x, abss(a - b), abss(a - c), abss(a - d));
 
         a = logf(x + 1);
         b = sum_series_forward(x, x, log_p, how_many_macloren);
         c = sum_series_backward(x, x, log_p, how_many_macloren);
         d = sum_series_pair_forward(x, x, log_p, how_many_macloren);
-        printf_s("log   %.7f %.7f %.7f %.7f || errors: %.7f %.7f %.7f\n", a, b, c, d, abs(a - b), abs(a - c), abs(a - d));
-        //fprintf(output, "log %.2f %.7f %.7f %.7f\n", x, abs(a - b), abs(a - c), abs(a - d));
+        printf_s("log   %.7f %.7f %.7f %.7f || errors: %.7f %.7f %.7f\n", a, b, c, d, abss(a - b), abss(a - c), abss(a - d));
+        //fprintf(output, "log %.2f %.7f %.7f %.7f\n", x, abss(a - b), abss(a - c), abss(a - d));
 
         a = cosf(x);
         b = sum_series_forward(1, x, cos_p, how_many_macloren);
         c = sum_series_backward(1, x, cos_p, how_many_macloren);
         d = sum_series_pair_forward(1, x, cos_p, how_many_macloren);
-        printf_s("cos   %.7f %.7f %.7f %.7f || errors: %.7f %.7f %.7f\n", a, b, c, d, abs(a - b), abs(a - c), abs(a - d));
-        //fprintf(output, "cos %.2f %.7f %.7f %.7f\n", x, abs(a - b), abs(a - c), abs(a - d));
+        printf_s("cos   %.7f %.7f %.7f %.7f || errors: %.7f %.7f %.7f\n", a, b, c, d, abss(a - b), abss(a - c), abss(a - d));
+        //fprintf(output, "cos %.2f %.7f %.7f %.7f\n", x, abss(a - b), abss(a - c), abss(a - d));
 
         a = expf(x);
         b = sum_series_forward(1, x, exp_p, how_many_macloren);
         c = sum_series_backward(1, x, exp_p, how_many_macloren);
         d = sum_series_pair_forward(1, x, exp_p, how_many_macloren);
-        printf_s("exp   %.7f %.7f %.7f %.7f || errors: %.7f %.7f %.7f\n", a, b, c, d, abs(a - b), abs(a - c), abs(a - d));
-        //fprintf(output, "exp %.2f %.7f %.7f %.7f\n", x, abs(a - b), abs(a - c), abs(a - d));
+        printf_s("exp   %.7f %.7f %.7f %.7f || errors: %.7f %.7f %.7f\n", a, b, c, d, abss(a - b), abss(a - c), abss(a - d));
+        //fprintf(output, "exp %.2f %.7f %.7f %.7f\n", x, abss(a - b), abss(a - c), abss(a - d));
     }
     //fclose(output);
 }
