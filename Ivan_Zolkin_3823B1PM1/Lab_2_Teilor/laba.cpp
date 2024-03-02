@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <math.h>
 
+#pragma warning(disable: 4996)
+
 //BEGIN-------------Вычисление множителей для последующих членов ряда---------------------------------
 
 float sin_p(float x, int i)  //Функция вычисления множителя для следующего члена ряда для синуса
@@ -39,6 +41,7 @@ float sum_series_backward(float a, float x, float(*next)(float, int), int n) //�
     float res = 0;
     if (!series_mem) {
         printf("ERROR: can't allocate memory for series_mem in sum_series_backward()\n");
+        getchar();
         exit(1);
     }
     series_mem[0] = a;
@@ -74,33 +77,53 @@ float sum_series_pair_forward(float a, float x, float(*next)(float, int), int n)
     return res;
 }
 
+float abs(float a) {
+    return a < 0 ? -a : a;
+}
+
 int main()
 {
     int how_many_macloren = 1000000; //кол-во членов ряда
-    float x = 1.1;
-    
-    float a = sinf(x);
-    float b = sum_series_forward(x, x, sin_p, how_many_macloren);
-    float c = sum_series_backward(x, x, sin_p, how_many_macloren);
-    float d = sum_series_pair_forward(x, x, sin_p, how_many_macloren);
-    printf_s("%f %f %f %f\n",a,b,c,d);
+    float x = -1,a,b,c,d,error_forward,error_backward,error_forward_pair;
+    int test_num = 0;
 
-    a = logf(x+1);
-    b = sum_series_forward(x, x, log_p, how_many_macloren);
-    c = sum_series_backward(x, x, log_p, how_many_macloren);
-    d = sum_series_pair_forward(x, x, log_p, how_many_macloren);
-    printf_s("%f %f %f %f\n", a, b, c, d);
+    /*FILE* output = NULL;
+    output = fopen("res", "w");
+    if (!output) {
+        printf_s("OPEN FILE ERROR");
+        getchar();
+        exit(2);
+    }*/
 
-    a = cosf(x);
-    b = sum_series_forward(1, x, cos_p, how_many_macloren);
-    c = sum_series_backward( 1, x, cos_p, how_many_macloren);
-    d = sum_series_pair_forward(x, x, cos_p, how_many_macloren);
-    printf_s("%f %f %f %f\n", a, b, c, d);
+    for (; x <= 1; x += 0.02,test_num++) {
+        printf_s("\n---------------test %i // x = %.2f -----------------\n", test_num,x);
+        a = sinf(x);
+        b = sum_series_forward(x, x, sin_p, how_many_macloren);
+        c = sum_series_backward(x, x, sin_p, how_many_macloren);
+        d = sum_series_pair_forward(x, x, sin_p, how_many_macloren);
+        printf_s("sin   %.7f %.7f %.7f %.7f || errors: %.7f %.7f %.7f\n", a, b, c, d,abs(a-b), abs(a - c), abs(a - d));
+        //fprintf(output,"sin %.2f %.7f %.7f %.7f\n",x, abs(a - b), abs(a - c), abs(a - d));
 
-    a = expf(x);
-    b = sum_series_forward(1, x, exp_p, how_many_macloren);
-    c = sum_series_backward(1, x, exp_p, how_many_macloren);
-    d = sum_series_pair_forward(x, x, exp_p, how_many_macloren);
-    printf_s("%f %f %f %f\n", a, b, c, d);
+        a = logf(x + 1);
+        b = sum_series_forward(x, x, log_p, how_many_macloren);
+        c = sum_series_backward(x, x, log_p, how_many_macloren);
+        d = sum_series_pair_forward(x, x, log_p, how_many_macloren);
+        printf_s("log   %.7f %.7f %.7f %.7f || errors: %.7f %.7f %.7f\n", a, b, c, d, abs(a - b), abs(a - c), abs(a - d));
+        //fprintf(output, "log %.2f %.7f %.7f %.7f\n", x, abs(a - b), abs(a - c), abs(a - d));
 
+        a = cosf(x);
+        b = sum_series_forward(1, x, cos_p, how_many_macloren);
+        c = sum_series_backward(1, x, cos_p, how_many_macloren);
+        d = sum_series_pair_forward(1, x, cos_p, how_many_macloren);
+        printf_s("cos   %.7f %.7f %.7f %.7f || errors: %.7f %.7f %.7f\n", a, b, c, d, abs(a - b), abs(a - c), abs(a - d));
+        //fprintf(output, "cos %.2f %.7f %.7f %.7f\n", x, abs(a - b), abs(a - c), abs(a - d));
+
+        a = expf(x);
+        b = sum_series_forward(1, x, exp_p, how_many_macloren);
+        c = sum_series_backward(1, x, exp_p, how_many_macloren);
+        d = sum_series_pair_forward(1, x, exp_p, how_many_macloren);
+        printf_s("exp   %.7f %.7f %.7f %.7f || errors: %.7f %.7f %.7f\n", a, b, c, d, abs(a - b), abs(a - c), abs(a - d));
+        //fprintf(output, "exp %.2f %.7f %.7f %.7f\n", x, abs(a - b), abs(a - c), abs(a - d));
+    }
+    //fclose(output);
 }
