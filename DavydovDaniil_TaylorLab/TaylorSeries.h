@@ -1,19 +1,11 @@
 #pragma once
 float sin_next(float x, int i);
 
-//float sin_prev(float x, int i);
-
 float cos_next(float x, int i);
-
-//float cos_prev(float x, int i);
 
 float exp_next(float x, int i);
 
-//float exp_prev(float x, int i);
-
 float log_next(float x, int i);
-
-//float log_prev(float x, int i);
 
 void prepSin(float& x, int& n);
 

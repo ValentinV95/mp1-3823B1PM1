@@ -6,40 +6,20 @@ float sin_next(float x, int i)
 	return -x * x / (float)(4 * i * i + 2 * i);
 }
 
-/*float sin_prev(float x, int i)
-{
-	return (float)(-4 * i * i + 6 * i - 2) / (x * x);
-}*/
-
 float cos_next(float x, int i)
 {
 	return x * x / (float)(2 * i - 4 * i * i);
 }
-
-/*float cos_prev(float x, int i)
-{
-	return (float)(-4 * i * i + 8 * i - 3) / (x * x);
-}*/
 
 float exp_next(float x, int i)
 {
 	return x / (float)i;
 }
 
-/*float exp_prev(float x, int i)
-{
-	return (float)(i - 1) / x;
-}*/
-
 float log_next(float x, int i)
 {
 	return x * x * float(2 * i - 1) / float(2 * i + 1);
 }
-
-/*float log_prev(float x, int i)
-{
-	return (float)(2 * i - 1) / (x * x * (float)(2 * i - 3));
-}*/
 
 void prepSin(float& x, int& n)
 {
