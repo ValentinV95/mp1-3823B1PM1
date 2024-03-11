@@ -9,7 +9,7 @@ int main()
 	int funcNum = 0, SumNum = 0, flag = 1;
 	float (*TaylorSeries[4])(float const, float(*)(float, float const, float(*)(float, int))) = { t_sin, t_cos, t_exp, t_log };
 	float (*SumFunc[3])(float, float const, float(*)(float, int)) = { directSum , extendedSum ,reverseSum };
-	float (*mathFunc[4])(float) = { sin, cos, exp, log };
+	float (*mathFunc[4])(float) = { sinf, cos, exp, log };
 	do
 	{
 		do
@@ -26,16 +26,25 @@ int main()
 			std::cin >> SumNum;
 		} while (SumNum < 1 || SumNum > 3);
 		SumNum -= 1;
-		std::cout << "Enter x: ";
-		std::cin >> x;
-		calculateT(x, mathFunc[funcNum], SumFunc[SumNum], TaylorSeries[funcNum]);
+		do
+		{
+			std::cout << "Enter x: ";
+			std::cin >> x;
+			calculateT(x, mathFunc[funcNum], SumFunc[SumNum], TaylorSeries[funcNum]);
+			do
+			{
+				std::cout << "\nCalculate another x? Yes - 1, No - 0 : ";
+				std::cin >> flag;
+				system("cls");
+			} while (flag != 1 && flag != 0);
+		} while (flag);
 		do
 		{
 			std::cout << "\nStart again? Yes - 1, No - 0 : ";
 			std::cin >> flag;
 			system("cls");
 		} while (flag != 1 && flag != 0);
-	} while (flag == 1);
+	} while (flag);
 	return 0;
 }
 void calculateT(float arg, float(*mathF)(float), float(*SumF)(float, float const, float(*)(float, int)), float(*TS)(float const, float(*)(float, float const, float(*)(float, int))))

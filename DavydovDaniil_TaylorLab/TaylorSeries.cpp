@@ -3,12 +3,12 @@
 #include "cmath"
 float sin_next(float x, int i)
 {
-	return -x * x / (float)(4 * i * i + 2 * i);
+	return -x * x / (float)(2 * i * (2 * i + 1));
 }
 
 float cos_next(float x, int i)
 {
-	return x * x / (float)(2 * i - 4 * i * i);
+	return x * x / (float)(2 * i * (1 - 2 * i));
 }
 
 float exp_next(float x, int i)
@@ -25,16 +25,24 @@ void prepSin(float& x, int& n)
 {
 	float tmp;
 	float const pi = 3.14159265f;
+	int m = 0;
 	n = 0;
-	do
+	while (fabs(x) >= 4.0f)
 	{
-		tmp = x * 2.0f / pi;
-		n += (int)tmp;
-		if (x < 0.0f)
-			n--;
+		x /= 4.0f;
+		m++;
+	}
+	if (x < 0.0f)
+		x += 2.0f * pi;
+	while (m > 0)
+	{
+		n = (int) (x * 2.0f / pi);
 		x -= (float)n * pi / 2.0f;
-		n = ((n % 4) + 4) % 4;
-	} while (fabs(x) > (pi / 2.0f));
+		x *= 4.0f;
+		m--;
+	}
+	n = (int)(x * 2.0f / pi);
+	x -= (float)n * pi / 2.0f;
 	if (n % 2 == 1)
 	{
 		x -= pi / 2.0f;
@@ -49,16 +57,24 @@ void prepCos(float& x, int& n)
 {
 	float tmp;
 	float const pi = 3.14159265f;
+	int m = 0;
 	n = 0;
-	do
+	while (fabs(x) >= 4.0f)
 	{
-		tmp = x * 2.0f / pi;
-		n += (int)tmp;
-		if (x < 0.0f)
-			n--;
+		x /= 4.0f;
+		m++;
+	}
+	if (x < 0.0f)
+		x += 2.0f * pi;
+	while (m > 0)
+	{
+		n = (int)(x * 2.0f / pi);
 		x -= (float)n * pi / 2.0f;
-		n = ((n % 4) + 4) % 4;
-	} while (fabs(x) > (pi / 2.0f));
+		x *= 4.0f;
+		m--;
+	}
+	n = (int)(x * 2.0f / pi);
+	x -= (float)n * pi / 2.0f;
 	if (n % 2 == 1)
 	{
 		x -= pi / 2.0f;
@@ -66,6 +82,7 @@ void prepCos(float& x, int& n)
 	}
 	if (n == 2)
 		n = -1;
+	else n = 1;
 	return;
 }
 
