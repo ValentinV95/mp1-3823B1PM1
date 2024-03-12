@@ -1,5 +1,0 @@
-﻿  merge_sort.cpp
-C:\Users\user\source\repos\merge_sort\merge_sort\merge_sort.cpp(24,13): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-C:\Users\user\source\repos\merge_sort\merge_sort\merge_sort.cpp(12,20): warning C4101: k: неиспользованная локальная переменная
-C:\Users\user\source\repos\merge_sort\merge_sort\merge_sort.cpp(85,21): warning C4244: return: преобразование "double" в "int", возможна потеря данных
-  merge_sort.vcxproj -> C:\Users\user\source\repos\merge_sort\x64\Debug\merge_sort.exe
