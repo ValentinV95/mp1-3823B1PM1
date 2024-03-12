@@ -1,7 +1,9 @@
 ﻿#include "stdio.h"
 #include "mathFunction.h"
 #include <algorithm>
+#include <fstream>
 #include <math.h>
+#include <iomanip>
 
 #pragma warning(disable : 4996)
 
@@ -28,7 +30,7 @@ int main()
     if (numberFunction < 0 || numberFunction > 3) return 0;
 
     float (*testFunctions[4])(float x, float (*)(float, float, float(*)(float, int), int)) = { sin_ , cos_, exp_, ln_ };
-    float (*mathFunctions[4])(float) = { sin, cos, expf, log };
+    float (*mathFunctions[4])(float) = { sinf, cosf, expf, logf };
 
     test(testFunctions[numberFunction], mathFunctions[numberFunction], ((numberFunction == 3) ? 32.0f : 0.0f) - 32.0f, 32.0f);
    
