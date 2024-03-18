@@ -63,7 +63,6 @@ void exp_t(float x, int n, float (*next)(float, size_t)) {
 void log_t(float x, int n, float (*next)(float, size_t)) {
 	x--;
 	float lg = log1p(x+1);
-	cout << lg << endl << endl;
 	float* values = (float*)malloc(n * sizeof(float));
 	values[0] = x;
 	for (int i = 1; i < n; i++) 
