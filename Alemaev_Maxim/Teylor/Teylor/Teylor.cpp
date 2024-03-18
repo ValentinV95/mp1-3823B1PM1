@@ -74,8 +74,6 @@ void log_t(float x, int n, float (*next)(float, size_t)) {
 void sin_t(float x, int n, float (*next)(float, size_t)) {
 	float sinx = sin(x);
 	float* values = (float*)malloc(n * sizeof(float));
-	for (int i = 0; i < n; i++)
-		values[i] = 0;
 	values[0] = x;
 	for (int i = 3; i < 2*n; i += 2) 
 		values[i/2] = values[i/2-1] * next(x, i);
@@ -86,10 +84,7 @@ void sin_t(float x, int n, float (*next)(float, size_t)) {
 void cos_t(float x, int n, float (*next)(float, size_t)) {
 	float cosx = cos(x);
 	float* values = (float*)malloc(n * sizeof(float));
-	for (int i = 0; i < n; i++)
-		values[i] = 0;
 	values[0] = 1;
-	int c = 1;
 	for (int i = 2; i < 2*n; i += 2) {
 		values[i/2] = values[i / 2 - 1] * next(x, i);
 	}
