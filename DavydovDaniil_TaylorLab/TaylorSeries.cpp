@@ -23,7 +23,6 @@ float log_next(float x, int i)
 
 void prepSin(float& x, int& n)
 {
-	float tmp;
 	float const pi = 3.14159265f;
 	int m = 0;
 	n = 0;
@@ -55,7 +54,6 @@ void prepSin(float& x, int& n)
 
 void prepCos(float& x, int& n)
 {
-	float tmp;
 	float const pi = 3.14159265f;
 	int m = 0;
 	n = 0;
@@ -88,13 +86,13 @@ void prepCos(float& x, int& n)
 
 void prepExp(float& x, int& p)
 {
-	float k = 1.0f;
+	int k = 1;
 	int tmp = 1, i;
 	p = 0;
 	if (x < 0.0f)
 	{
 		x = -x;
-		k = -1.0f;
+		k = -1;
 	}
 	if (x > 2.0f)
 	{
@@ -107,13 +105,7 @@ void prepExp(float& x, int& p)
 			tmp *= 2;
 	}
 	p = tmp;
-	if (x < 1.0f)
-		while (x < 1.0f)
-		{
-			x *= 2.0f;
-			p--;
-		}
-	if (k == -1.0f)
+	if (k == -1)
 		x = -x;
 	return;
 }
@@ -127,7 +119,7 @@ void prepLog(float& x, int& p)
 			x /= 2.0f;
 			p++;
 		}
-	if (x < 1.0f)
+	else if (x < 1.0f)
 		while (x < 1.0f)
 		{
 			x *= 2.0f;
@@ -138,19 +130,20 @@ void prepLog(float& x, int& p)
 
 float directSum(float a, float const x, float(*next)(float, int))
 {
-	float res = a, const eps = 1e-6f;
+	float res = a, eps = fabs(res) * 1e-6f;
 	int i = 1;
 	while (fabs(a) > eps)
 	{
 		a *= next(x, i++);
 		res += a;
+		eps = fabs(res) * 1e-6f;
 	}
 	return res;
 }
 
 float extendedSum(float a, float const x, float(*next)(float, int))
 {
-	float res = a, tmp, const eps = 1e-6f;
+	float res = a, tmp, eps = fabs(res) * 1e-6f;
 	int i = 1;
 	a *= next(x, i++);
 	res += a;
@@ -159,13 +152,14 @@ float extendedSum(float a, float const x, float(*next)(float, int))
 		tmp = (a *= next(x, i++));
 		tmp += (a *= next(x, i++));
 		res += tmp;
+		eps = fabs(res) * 1e-6f;
 	}
 	return res;
 }
 
 float reverseSum(float a, float const x, float(*next)(float, int))
 {
-	float res = 0, arr[20], const eps = 1e-6f;
+	float res = 0, arr[20], eps = 1e-6f;
 	int i = 1, n = 20, tmp = n;
 	arr[0] = a;
 	while (fabs(a) > eps)
@@ -175,7 +169,7 @@ float reverseSum(float a, float const x, float(*next)(float, int))
 	return res;
 }
 
-float t_sin(float const x, float(*SumFunc)(float, float const, float(*)(float, int)))
+float t_sin(float const x, float(*SumFunc)( float, float const, float(*)(float, int) ))
 {
 	int n;
 	float y = x;
@@ -183,7 +177,7 @@ float t_sin(float const x, float(*SumFunc)(float, float const, float(*)(float, i
 	return SumFunc(y, y, sin_next);
 }
 
-float t_cos(float const x, float(*SumFunc)(float, float const, float(*)(float, int)))
+float t_cos(float const x, float(*SumFunc)( float, float const, float(*)(float, int) ))
 {
 	int n;
 	float y = x;
@@ -191,12 +185,10 @@ float t_cos(float const x, float(*SumFunc)(float, float const, float(*)(float, i
 	return SumFunc(1.0f, y, cos_next) * (float)n;
 }
 
-float t_exp(float const x, float(*SumFunc)(float, float const, float(*)(float, int)))
+float t_exp(float const x, float(*SumFunc)( float, float const, float(*)(float, int) ))
 {
 	int p, i;
-	float prod = 1.0f, y = x, term, k = 1.0f;
-	if (x < 0)
-		k = -1.0f;
+	float prod = 1.0f, y = x, term;
 	prepExp(y, p);
 	term = SumFunc(1, y, exp_next);
 	for (i = 0; i < p; i++)
@@ -204,7 +196,7 @@ float t_exp(float const x, float(*SumFunc)(float, float const, float(*)(float, i
 	return  prod;
 }
 
-float t_log(float const x, float(*SumFunc)(float, float const, float(*)(float, int)))
+float t_log(float const x, float(*SumFunc)( float, float const, float(*)(float, int) ))
 {
 	int p;
 	float y = x;

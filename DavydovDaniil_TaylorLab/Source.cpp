@@ -2,14 +2,14 @@
 #include <iomanip>
 #include <cmath>
 #include "TaylorSeries.h"
-void calculateT(float argument, float(*math)(float), float(*SumF)(float, float const, float(*)(float, int)), float(*TS)(float const, float(*)(float, float const, float(*)(float, int))));
+void calculateT(	float argument, float(*math)(float), float(*SumF)( float, float const, float(*next)(float, int) ), float(*TS)(  float const, float(*SumF)( float, float const, float(*next)(float, int) )  )	);
 int main()
 {
 	float x;
 	int funcNum = 0, SumNum = 0, flag = 1;
 	float (*TaylorSeries[4])(float const, float(*)(float, float const, float(*)(float, int))) = { t_sin, t_cos, t_exp, t_log };
 	float (*SumFunc[3])(float, float const, float(*)(float, int)) = { directSum , extendedSum ,reverseSum };
-	float (*mathFunc[4])(float) = { sinf, cos, exp, log };
+	float (*mathFunc[4])(float) = { sin, cos, exp, log };
 	do
 	{
 		do
@@ -22,7 +22,7 @@ int main()
 		do
 		{
 			system("cls");
-			std::cout << "Choose mrthod: 1 - direct, 2 - extended, 3 - reverse" << std::endl;
+			std::cout << "Choose method: 1 - direct, 2 - extended, 3 - reverse" << std::endl;
 			std::cin >> SumNum;
 		} while (SumNum < 1 || SumNum > 3);
 		SumNum -= 1;
@@ -47,7 +47,7 @@ int main()
 	} while (flag);
 	return 0;
 }
-void calculateT(float arg, float(*mathF)(float), float(*SumF)(float, float const, float(*)(float, int)), float(*TS)(float const, float(*)(float, float const, float(*)(float, int))))
+void calculateT(	float arg, float(*mathF)(float), float(*SumF)( float, float const, float(*next)(float, int) ), float(*TS)(  float const, float(*SumF)( float, float const, float(*next)(float, int) )  )	)
 {
 	float myRes, machineRes;
 	myRes = TS(arg, SumF);
