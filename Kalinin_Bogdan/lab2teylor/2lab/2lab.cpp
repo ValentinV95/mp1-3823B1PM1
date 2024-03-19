@@ -1,45 +1,38 @@
-﻿#define _CRT_SECURE_NO_WARNINGS
-
-#include <stdlib.h>
+﻿#include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
 #include <math.h>
 
 //series functions
 void series_sin(float* mas, int n, float x) {
 	int i;
-	memset(mas, 0, sizeof(float) * (n+1));
-	mas[1] = x;
+	mas[0] = x;
 
-	for (i = 3; i <= n; i += 2)
-		mas[i] = -(mas[i - 2] * x * x) / (i * (i - 1));
+	for (i = 1; i < n; i ++)
+		mas[i] = -(mas[i - 1] * x * x) / ((2*i+1)*2*i);
 
 	return;
 }
 
 void series_cos(float* mas, int n, float x) {
 	int i;
-	memset(mas, 0, sizeof(float) * (n + 1));
 	mas[0] = 1;
-
-	for (i = 2; i <= n; i += 2)
-		mas[i] = -(mas[i - 2] * x * x) / (i * (i - 1));
+	for (i = 1; i < n; i ++)
+		mas[i] = -(mas[i - 1] * x * x) / (2*i * (2*i - 1));
 }
 
 void series_exp(float* mas, int n, float x) {
 	int i;
 	mas[0] = 1;
-	for (i = 1; i <= n; i++) {
+	for (i = 1; i < n; i++) {
 		mas[i] = mas[i - 1] * x / i;
 	}
 }
 
 void series_lnplus1(float* mas, int n, float x) {
 	int i;
-	mas[0] = 0;
 	float var = x;
-	for (i = 1; i <= n; i++) {
-		mas[i] = i % 2 ? var / i : -var / i;
+	for (i = 0; i < n; i++) {
+		mas[i] = i % 2 ? -var / (i+1) : var / (i+1);
 		var *= x;
 	}
 }
@@ -49,7 +42,7 @@ void series_lnplus1(float* mas, int n, float x) {
 float direct_sum(float* mas, int n) {
 	float sum = 0;
 	int i;
-	for (i = 0; i <= n; i++) {
+	for (i = 0; i < n; i++) {
 		sum += mas[i];
 	}
 	return sum;
@@ -58,7 +51,7 @@ float direct_sum(float* mas, int n) {
 float reverse_sum(float* mas, int n) {
 	float sum = 0;
 	int i;
-	for (i = n; i >= 0; i--) {
+	for (i = n-1; i >= 0; i--) {
 		sum += mas[i];
 	}
 	return sum;
@@ -69,17 +62,14 @@ float paired_direct_sum(float* mas, int n) {
 	float buf = 0;
 	int k = 0;
 	int i;
-	for (i = 0; i <= n; i++) {
-		if (mas[i] != 0) {
-			buf += mas[i];
-			k++;
-			if (k == 2) {
-				sum += buf;
-				k = 0;
-				buf = 0;
-			}
+	for (i = 0; i < n; i++) {
+		buf += mas[i];
+		k++;
+		if (k == 2) {
+			sum += buf;
+			k = 0;
+			buf = 0;
 		}
-
 	}
 	sum += buf;
 
@@ -91,15 +81,13 @@ float paired_reverse_sum(float* mas, int n) {
 	float buf = 0;
 	int k = 0;
 	int i;
-	for (i = n; i >= 0; i--) {
-		if (mas[i] != 0) {
-			buf += mas[i];
-			k++;
-			if (k == 2) {
-				sum += buf;
-				k = 0;
-				buf = 0;
-			}
+	for (i = n-1; i >= 0; i--) {
+		buf += mas[i];
+		k++;
+		if (k == 2) {
+			sum += buf;
+			k = 0;
+			buf = 0;
 		}
 	}
 	sum += buf;
@@ -109,14 +97,13 @@ float paired_reverse_sum(float* mas, int n) {
 
 
 //the taylor func itself
-float taylor(float x, void(*series_function)(float*, int, float), float(*summation_function)(float*, int), int highest_degree) {
+float taylor(float x, void(*series_function)(float*, int, float), float(*summation_function)(float*, int), int num_of_elements) {
 	float* mas;
 	float res;
 
-	mas = (float*)malloc((highest_degree+1) * sizeof(float));
-	series_function(mas, highest_degree, x);
-	res = summation_function(mas, highest_degree);
-
+	mas = (float*)malloc((num_of_elements) * sizeof(float));
+	series_function(mas, num_of_elements, x);
+	res = summation_function(mas, num_of_elements);
 
 	free(mas);
 
@@ -124,61 +111,61 @@ float taylor(float x, void(*series_function)(float*, int, float), float(*summati
 }
 
 
+
 //for data collection
-void small_x() {
+void get_data() {
 	float x;
 	float* mas;
 	float res;
-	int highest_degree = 1000000;
+	int num_of_elements = 100000;
 	int n;
 	float(*summation_function)(float*, int);
-	float(*std_func)(float) = sinf;
-	void(*series_function)(float*, int, float) = series_sin;
+	float(*std_func)(float) = log1pf;
+	void(*series_function)(float*, int, float) = series_lnplus1;
+	double mean_dir, mean_rev, mean_pd, mean_pr;
+	float max_x, dx;
+	float err;
 
+	mas = (float*)malloc((num_of_elements + 1) * sizeof(float));
+	n = num_of_elements;
 
-	mas = (float*)malloc((highest_degree + 1) * sizeof(float));
+	mean_dir = mean_rev = mean_pd = mean_pr = 0;
 
+	max_x = 0.8; dx = (float)1/(100);
 
 	
-	n = highest_degree;
-
-	
-	
-	
-	for (x = 0; x <= 6; x += 0.24) {
-		series_function(mas, highest_degree, x);
-
+	for (x = -0.8; x <= max_x; x += dx) {
+		series_function(mas, n, x);
+		
 		printf("%.8f\t", x);
 		
 		summation_function = direct_sum;
-		printf("%.8f\t", fabs(std_func(x) - summation_function(mas, n)));
+		err = fabs(std_func(x) - summation_function(mas, n));
+		mean_dir += (double)err ;
+		printf("%.8e\t", err);
 
 		summation_function = reverse_sum;
-		printf("%.8f\t", fabs(std_func(x) - summation_function(mas, n)));
+		err = fabs(std_func(x) - summation_function(mas, n));
+		mean_rev += (double)err;
+		printf("%.8e\t", err);
 
 		summation_function = paired_direct_sum;
-		printf("%.8f\t", fabs(std_func(x) - summation_function(mas, n)));
+		err = fabs(std_func(x) - summation_function(mas, n));
+		mean_pd += (double)err;
+		printf("%.8e\t", err);
 
 		summation_function = paired_reverse_sum;
-		printf("%.8f\t", fabs(std_func(x) - summation_function(mas, n)));
+		err = fabs(std_func(x) - summation_function(mas, n));
+		mean_pr += (double)err;
+		printf("%.8e\t", err);
 
 		printf("\n");
 	}
-	
-	
-	
-
+	printf("mean: %.8e\t %.8e\t %.8e\t %.8e\t", (mean_dir * dx) / max_x, (mean_rev * dx) / max_x, (mean_pd * dx) / max_x, (mean_pr * dx) / max_x);
+	free(mas);
 }
 
 
-
-//
-
-
-//log
-float logfp1(float x) {
-	return logf(x + 1);
-}
 
 //menu
 void func_choose() {
@@ -199,8 +186,6 @@ void summ_choose() {
 }
 
 
-
-
 int main() {
 	int n;
 	float x;
@@ -209,6 +194,7 @@ int main() {
 	float(*summation_function)(float*, int);
 	float res;
 	float (*std_func)(float);
+
 	while (1) {
 		func_choose();
 		scanf_s("%i", &ans);
@@ -216,15 +202,19 @@ int main() {
 		{
 		case 1:
 			series_function = series_sin;
+			std_func = sinf;
 			break;
 		case 2:
 			series_function = series_cos;
+			std_func = cosf;
 			break;
 		case 3:
 			series_function = series_exp;
+			std_func = expf;
 			break;
 		case 4:
 			series_function = series_lnplus1;
+			std_func = log1pf;
 			break;
 		default:
 			return 0;
@@ -237,19 +227,16 @@ int main() {
 		{
 		case 1:
 			summation_function = direct_sum;
-			std_func = sinf;
 			break;
 		case 2:
 			summation_function = reverse_sum;
-			std_func = cosf;
 			break;
 		case 3:
 			summation_function = paired_direct_sum;
-			std_func = expf;
+			
 			break;
 		case 4:
 			summation_function = paired_reverse_sum;
-			std_func = logfp1;
 			break;
 		default:
 			return 0;
@@ -259,24 +246,15 @@ int main() {
 		printf("x = ");
 		scanf_s("%f", &x);
 
-
-		printf("highest degree in series = ");
+		printf("number of elements in series = ");
 		scanf_s("%i", &n);
 
-
 		res = taylor(x, series_function, summation_function, n);
-		printf("%.7f\n", res);
-		printf("Error = %.7f\n\n", std_func(x) - res);
+		printf("Result = %.8e\n", res);
+		printf("Std = %.8e\n", std_func(x));
+		printf("Error = %.8e\n\n", fabs(std_func(x) - res));
 	}
 
 
-	small_x();
-
-
-
-
-	
-	
-	
 	return 0;
 }
