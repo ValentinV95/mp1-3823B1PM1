@@ -19,29 +19,31 @@ float next_ln ( float x, int i){
 
 float sum_function(float a0, float x, float(*next)(float, int), int n){
     float res, ai;
-    res = 0;
-    ai = a0;
+    res = ai = a0;
     for (int i = 1; i <= n; i++) {
-        res += ai;
         ai *= next(x, i);
+        res += ai;
     }
     return res;
 }
 
-float sumreverse_function (float a0, float x, float(*next)(float, int), int n) {
+float sumreverse_function(float a0, float x, float(*next)(float, int), int n) {
     float res, ai;
-    res = 0;
     int size = n + 1;
     float* arr = new float[size];
-    arr[0] = ai = a0;
-    for ( int i = i; i < size; i++){
-        arr[i] = arr[i-1] * next(x, i);
+    res = 0;
+    ai = a0;
+    arr[0] = a0;
+    for (int i = 1; i < size; i++) {
+        ai *= next(x, i);
+        arr[i] = ai;
+
     }
     for (int i = 0; i < size / 2; i++) {
-            float tmp = arr[i];
-            arr[i] = arr[size - i - 1];
-            arr[size - i - 1] = tmp;
-        }
+        float tmp = arr[i];
+        arr[i] = arr[size - i - 1];
+        arr[size - i - 1] = tmp;
+    }
 
     for (int i = 0; i < size; i++) {
         res += arr[i];
@@ -50,15 +52,20 @@ float sumreverse_function (float a0, float x, float(*next)(float, int), int n) {
     return res;
 }
 
-float pairwisesum_function (float a0, float x, float(*next)(float, int), int n) {
+float pairwisesum_function(float a0, float x, float(*next)(float, int), int n) {
     float res, ai, tmp;
     res = ai = a0;
-    for (int i = 1; i <= n; i+=2) {
-            tmp = ai * next(x, i);
-            ai *= next(x, i) * next(x, i + 1);
-            res += tmp + ai;
+    for (int i = 1; i <= n; i++) {
+        ai *= next(x, i);
+        tmp = ai;
+        if (i + 1 <= n)
+        {
+            i++;
+            ai *= next(x, i);
+            tmp += ai;
         }
-    if (n % 2 == 0) res += ai * next(x, n);
+        res += tmp;
+    }
     return res;
 }
 int main() {
@@ -113,7 +120,7 @@ int main() {
     std::cout << sin(x) <<std::endl;
     std::cout << cos (x)<<std::endl;
     std::cout << exp (x)<<std::endl;
-    std::cout << log(1+ x)<<std::endl;
+    std::cout << log(1 + x)<<std::endl;
 
     return 0;
 }
