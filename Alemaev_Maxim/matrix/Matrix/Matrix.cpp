@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <intrin.h>
 #include <fstream>
 
@@ -136,13 +136,17 @@ public:
 	void check_coop() {
 		try {
 			coop = 1;
-			for (int i = depend.getsize(); i < n; i++)
-				if (abs(mat[i][m - 1]) > eps) {
-					coop = 0;
+			for (int i = 0; i < n; i++) {
+				t s = 0;
+				for (int j = 0; j < m - 1; j++)
+					s += mat[i][j];
+				if (abs(mat[i][m - 1]) > eps && abs(s)<eps) {
 					throw Cooperative_exception<t>("Система несовместна", i + 1, mat[i][m - 1]);
 				}
+			}
 		}
 		catch (Cooperative_exception<t>& e) {
+			coop = 0;
 			exception(e);
 		}
 	}
@@ -188,7 +192,7 @@ public:
 	void check_ans() {
 		check_coop();
 		if (coop) {
-			Vector<t> values(m - 1);
+			Vector<t> values(free.getsize() + depend.getsize());
 			if (free.getsize() > 0) {
 				std::cout << "Введите значения свободных переменных\n";
 				for (int i = 0; i < free.getsize(); i++) {
@@ -205,11 +209,11 @@ public:
 			t dif = 0;
 			for (int i = 0; i < n; i++) {
 				t s = 0;
-				for (int j = 0; j < m - 1; j++)
+				for (int j = 0; j < values.getsize(); j++)
 					s += values[j] * orig[i][j];
-				dif = abs(s - orig[i][m - 1]);
+				dif = std::max(abs(s - orig[i][m - 1]), dif);
 			}
-			std::cout << dif;
+			std::cout << "Погрешность: " << dif;
 		}
 	}
 
@@ -225,7 +229,8 @@ int main() {
 	std::setlocale(LC_ALL, "rus");
 	std::cout << std::fixed;
 	std::cout.precision(3);
-	unsigned long long n, m;
+	int n, m;
+	std::cout << "Введите число строк и столбцов:\n";
 	std::cin >> n >> m;
 	Matrix<double> mat(n, m);
 	for (int i = 0; i < n; i++)
@@ -240,5 +245,4 @@ int main() {
 	}
 	mat.answer();
 	mat.check_ans();
-	
 }
