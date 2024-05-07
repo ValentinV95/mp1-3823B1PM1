@@ -96,6 +96,7 @@ public:
 		mat = new t * [n];
 		vec_orig = new t[n * m];
 		vec_mat = new t[n * m];
+		memset(vec_orig, 0, n * m * sizeof(t));
 		for (int i = 0; i < n; i++) {
 			mat[i] = &vec_mat[i * m];
 			orig[i] = &vec_orig[i * m];
@@ -192,7 +193,7 @@ public:
 	void check_ans() {
 		check_coop();
 		if (coop) {
-			Vector<t> values(free.getsize() + depend.getsize());
+			Vector<t> values(m-1);
 			if (free.getsize() > 0) {
 				std::cout << "Введите значения свободных переменных\n";
 				for (int i = 0; i < free.getsize(); i++) {
@@ -209,7 +210,7 @@ public:
 			t dif = 0;
 			for (int i = 0; i < n; i++) {
 				t s = 0;
-				for (int j = 0; j < values.getsize(); j++)
+				for (int j = 0; j < m-1; j++)
 					s += values[j] * orig[i][j];
 				dif = std::max(abs(s - orig[i][m - 1]), dif);
 			}
@@ -225,7 +226,7 @@ public:
 	}
 };
 
-int main() {
+/* int main() {
 	std::setlocale(LC_ALL, "rus");
 	std::cout << std::fixed;
 	std::cout.precision(3);
@@ -245,4 +246,4 @@ int main() {
 	}
 	mat.answer();
 	mat.check_ans();
-}
+} */
