@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\code\\lab3\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{22B64EBD-4FBA-4A61-9315-624EBC2B0C86}|JordanGauss\\JordanGauss.vcxproj|D:\\code\\lab3\\JordanGauss\\JordanGauss.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{22B64EBD-4FBA-4A61-9315-624EBC2B0C86}|JordanGauss\\JordanGauss.vcxproj|solutionrelative:JordanGauss\\JordanGauss.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "JordanGauss.cpp",
+              "DocumentMoniker": "D:\\code\\lab3\\JordanGauss\\JordanGauss.cpp",
+              "RelativeDocumentMoniker": "JordanGauss\\JordanGauss.cpp",
+              "ToolTip": "D:\\code\\lab3\\JordanGauss\\JordanGauss.cpp",
+              "RelativeToolTip": "JordanGauss\\JordanGauss.cpp",
+              "ViewState": "AQIAAFcAAAAAAAAAAAAAAGYAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-18T15:59:05.247Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
